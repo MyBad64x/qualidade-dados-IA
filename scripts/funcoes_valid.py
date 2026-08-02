@@ -14,6 +14,9 @@ def checar_duplicados(df, colunas):
 def checar_valores_negativos(df, colunas):
     return (df[colunas] < 0).sum()
 
+def checar_valores_zerados(df, colunas):
+    return (df[colunas] == 0).sum()
+
 def checar_sequencia_status_datas(df):
     return (
         df

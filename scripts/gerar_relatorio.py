@@ -1,10 +1,11 @@
 import pandas as pd
-from funcoes_valid import checar_nulos, checar_duplicados, checar_valores_negativos, checar_sequencia_status_datas, checar_orfaos
+from funcoes_valid import checar_nulos, checar_duplicados, checar_valores_negativos, checar_sequencia_status_datas, checar_orfaos, checar_valores_zerados
 
 # Carregando os dados
 df_customers = pd.read_csv("../dados/brutos/olist_customers_dataset.csv")
 df_orders = pd.read_csv("../dados/brutos/olist_orders_dataset.csv")
 df_order_items = pd.read_csv("../dados/brutos/olist_order_items_dataset.csv")
+df_products = pd.read_csv("../dados/brutos/olist_products_dataset.csv")
 
 # Montando o conteúdo do relatório
 relatorio = "# Relatório de Qualidade de Dados — E-commerce Olist\n\n"
@@ -42,6 +43,21 @@ relatorio += f"{checar_duplicados(df_order_items, ['order_id', 'order_item_id'])
 relatorio += "**Valores negativos (price, freight_value):**\n```\n"
 relatorio += str(checar_valores_negativos(df_order_items, ["price", "freight_value"]))
 relatorio += "\n```\n\n"
+
+# --- Products ---
+relatorio += "## Tabela: Products\n\n"
+relatorio += "**Nulos por coluna:**\n```\n"
+relatorio += str(checar_nulos(df_products))
+relatorio += "\n```\n\n"
+
+relatorio += "**Duplicatas (product_id):**\n"
+relatorio += f"{checar_duplicados(df_products, 'product_id')}\n\n"
+
+relatorio += "**Valores zerados (peso e dimensões):**\n```\n"
+relatorio += str(checar_valores_zerados(df_products, ["product_weight_g", "product_length_cm", "product_height_cm", "product_width_cm"]))
+relatorio += "\n```\n\n"
+
+relatorio += "**Observação:** 610 produtos possuem cadastro de marketing incompleto (categoria, nome, descrição e fotos ausentes simultaneamente). Um produto específico (`product_id: 5eb564652db742ff8f28759cd8d2652a`) está praticamente vazio, sem nenhuma informação de cadastro ou dimensões preenchida.\n\n"
 
 # --- Relacionamento entre Tabelas ---
 relatorio += "## Relacionamento entre Tabelas\n\n"
