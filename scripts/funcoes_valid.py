@@ -27,3 +27,6 @@ def checar_sequencia_status_datas(df):
         .any(axis=1)
         .sum()
     )
+
+def checar_orfaos(df_estrangeiro, df_principal, coluna_chave):
+    return (~df_estrangeiro[coluna_chave].isin(df_principal[coluna_chave])).sum()
