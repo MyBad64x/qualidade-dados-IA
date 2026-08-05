@@ -118,3 +118,22 @@ dtype: int64
 **Pedidos sem cliente correspondente (orders → customers):**
 0
 
+## Tabela: Sellers
+
+**Nulos por coluna:**
+```
+seller_id                 0
+seller_zip_code_prefix    0
+seller_city               0
+seller_state              0
+dtype: int64
+```
+
+**Duplicatas (seller_id):**
+0
+
+**Vendedores órfãos (order_items → sellers):**
+0
+
+**Observação:** tabela sem inconsistências encontradas — nulos, duplicatas e integridade referencial todos limpos.
+
