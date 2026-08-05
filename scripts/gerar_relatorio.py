@@ -6,6 +6,7 @@ df_customers = pd.read_csv("../dados/brutos/olist_customers_dataset.csv")
 df_orders = pd.read_csv("../dados/brutos/olist_orders_dataset.csv")
 df_order_items = pd.read_csv("../dados/brutos/olist_order_items_dataset.csv")
 df_products = pd.read_csv("../dados/brutos/olist_products_dataset.csv")
+df_payments = pd.read_csv("../dados/brutos/olist_order_payments_dataset.csv")
 
 # Montando o conteúdo do relatório
 relatorio = "# Relatório de Qualidade de Dados — E-commerce Olist\n\n"
@@ -58,6 +59,20 @@ relatorio += str(checar_valores_zerados(df_products, ["product_weight_g", "produ
 relatorio += "\n```\n\n"
 
 relatorio += "**Observação:** 610 produtos possuem cadastro de marketing incompleto (categoria, nome, descrição e fotos ausentes simultaneamente). Um produto específico (`product_id: 5eb564652db742ff8f28759cd8d2652a`) está praticamente vazio, sem nenhuma informação de cadastro ou dimensões preenchida.\n\n"
+
+# --- Payments ---
+relatorio += "## Tabela: Payments\n\n"
+relatorio += "**Nulos por coluna:**\n```\n"
+relatorio += str(checar_nulos(df_payments))
+relatorio += "\n```\n\n"
+
+relatorio += "**Parcelas zeradas (payment_installments):**\n"
+relatorio += f"{checar_valores_zerados(df_payments, 'payment_installments')}\n\n"
+
+relatorio += "**Valores de pagamento zerados (payment_value):**\n"
+relatorio += f"{checar_valores_zerados(df_payments, 'payment_value')}\n\n"
+
+relatorio += "**Observação:** 2 pagamentos em cartão de crédito (`credit_card`) apresentam 0 parcelas registradas, o que é logicamente inválido — todo pagamento efetuado precisa ter no mínimo 1 parcela. Além disso, dos 9 pagamentos com valor R$ 0,00, 6 são do tipo `voucher` (possivelmente legítimos, representando vouchers sem saldo remanescente usados como pagamento complementar) e 3 são do tipo `not_defined` (suspeitos, já que esse tipo de pagamento não está claramente documentado/classificado).\n\n"
 
 # --- Relacionamento entre Tabelas ---
 relatorio += "## Relacionamento entre Tabelas\n\n"
