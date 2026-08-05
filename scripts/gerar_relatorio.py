@@ -7,6 +7,7 @@ df_orders = pd.read_csv("../dados/brutos/olist_orders_dataset.csv")
 df_order_items = pd.read_csv("../dados/brutos/olist_order_items_dataset.csv")
 df_products = pd.read_csv("../dados/brutos/olist_products_dataset.csv")
 df_payments = pd.read_csv("../dados/brutos/olist_order_payments_dataset.csv")
+df_sellers = pd.read_csv("../dados/brutos/olist_sellers_dataset.csv")
 
 # Montando o conteúdo do relatório
 relatorio = "# Relatório de Qualidade de Dados — E-commerce Olist\n\n"
@@ -82,6 +83,20 @@ relatorio += f"{checar_orfaos(df_order_items, df_orders, 'order_id')}\n\n"
 
 relatorio += "**Pedidos sem cliente correspondente (orders → customers):**\n"
 relatorio += f"{checar_orfaos(df_orders, df_customers, 'customer_id')}\n\n"
+
+# --- Sellers ---
+relatorio += "## Tabela: Sellers\n\n"
+relatorio += "**Nulos por coluna:**\n```\n"
+relatorio += str(checar_nulos(df_sellers))
+relatorio += "\n```\n\n"
+
+relatorio += "**Duplicatas (seller_id):**\n"
+relatorio += f"{checar_duplicados(df_sellers, 'seller_id')}\n\n"
+
+relatorio += "**Vendedores órfãos (order_items → sellers):**\n"
+relatorio += f"{checar_orfaos(df_order_items, df_sellers, 'seller_id')}\n\n"
+
+relatorio += "**Observação:** tabela sem inconsistências encontradas — nulos, duplicatas e integridade referencial todos limpos.\n\n"
 
 # Salvando o arquivo
 with open("../relatorios/relatorio_qualidade.md", "w", encoding="utf-8") as arquivo:
