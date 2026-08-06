@@ -182,3 +182,20 @@ dtype: int64
 
 **Observação:** mais de 260 mil linhas duplicadas (mesmo CEP, coordenadas, cidade e estado), sugerindo redundância na coleta de dados. Além disso, 42 linhas possuem coordenadas geográficas fora dos limites plausíveis do território brasileiro, indicando possível erro de geocodificação.
 
+## Tabela: Category Translation
+
+**Nulos por coluna:**
+```
+product_category_name            0
+product_category_name_english    0
+dtype: int64
+```
+
+**Duplicatas (product_category_name):**
+0
+
+**Categorias em products sem tradução correspondente:**
+13
+
+**Observação:** 13 categorias de produtos utilizadas em `df_products` não possuem tradução correspondente nesta tabela (valor isolado dos 610 nulos já documentados na tabela Products).
+

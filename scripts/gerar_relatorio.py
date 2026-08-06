@@ -10,6 +10,7 @@ df_payments = pd.read_csv("../dados/brutos/olist_order_payments_dataset.csv")
 df_sellers = pd.read_csv("../dados/brutos/olist_sellers_dataset.csv")
 df_reviews = pd.read_csv("../dados/brutos/olist_order_reviews_dataset.csv")
 df_geolocation = pd.read_csv("../dados/brutos/olist_geolocation_dataset.csv")
+df_translation = pd.read_csv("../dados/brutos/product_category_name_translation.csv")
 
 # Montando o conteúdo do relatório
 relatorio = "# Relatório de Qualidade de Dados — E-commerce Olist\n\n"
@@ -130,6 +131,20 @@ relatorio += "**Longitude fora do range do Brasil (-74 a -33):**\n"
 relatorio += f"{checar_fora_do_range(df_geolocation, 'geolocation_lng', -74, -33)}\n\n"
 
 relatorio += "**Observação:** mais de 260 mil linhas duplicadas (mesmo CEP, coordenadas, cidade e estado), sugerindo redundância na coleta de dados. Além disso, 42 linhas possuem coordenadas geográficas fora dos limites plausíveis do território brasileiro, indicando possível erro de geocodificação.\n\n"
+
+# --- Category Translation ---
+relatorio += "## Tabela: Category Translation\n\n"
+relatorio += "**Nulos por coluna:**\n```\n"
+relatorio += str(checar_nulos(df_translation))
+relatorio += "\n```\n\n"
+
+relatorio += "**Duplicatas (product_category_name):**\n"
+relatorio += f"{checar_duplicados(df_translation, 'product_category_name')}\n\n"
+
+relatorio += "**Categorias em products sem tradução correspondente:**\n"
+relatorio += f"{checar_orfaos(df_products.dropna(subset=['product_category_name']), df_translation, 'product_category_name')}\n\n"
+
+relatorio += "**Observação:** 13 categorias de produtos utilizadas em `df_products` não possuem tradução correspondente nesta tabela (valor isolado dos 610 nulos já documentados na tabela Products).\n\n"
 
 # Salvando o arquivo
 with open("../relatorios/relatorio_qualidade.md", "w", encoding="utf-8") as arquivo:
