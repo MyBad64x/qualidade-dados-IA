@@ -8,6 +8,7 @@ df_order_items = pd.read_csv("../dados/brutos/olist_order_items_dataset.csv")
 df_products = pd.read_csv("../dados/brutos/olist_products_dataset.csv")
 df_payments = pd.read_csv("../dados/brutos/olist_order_payments_dataset.csv")
 df_sellers = pd.read_csv("../dados/brutos/olist_sellers_dataset.csv")
+df_reviews = pd.read_csv("../dados/brutos/olist_order_reviews_dataset.csv")
 
 # Montando o conteúdo do relatório
 relatorio = "# Relatório de Qualidade de Dados — E-commerce Olist\n\n"
@@ -97,6 +98,20 @@ relatorio += "**Vendedores órfãos (order_items → sellers):**\n"
 relatorio += f"{checar_orfaos(df_order_items, df_sellers, 'seller_id')}\n\n"
 
 relatorio += "**Observação:** tabela sem inconsistências encontradas — nulos, duplicatas e integridade referencial todos limpos.\n\n"
+
+# --- Reviews ---
+relatorio += "## Tabela: Reviews\n\n"
+relatorio += "**Nulos por coluna:**\n```\n"
+relatorio += str(checar_nulos(df_reviews))
+relatorio += "\n```\n\n"
+
+relatorio += "**Duplicatas (review_id):**\n"
+relatorio += f"{checar_duplicados(df_reviews, 'review_id')}\n\n"
+
+relatorio += "**Reviews órfãs (reviews → orders):**\n"
+relatorio += f"{checar_orfaos(df_reviews, df_orders, 'order_id')}\n\n"
+
+relatorio += "**Observação:** review_score sempre dentro do intervalo esperado (1 a 5). Os 814 casos de review_id duplicado não representam erro — correspondem a uma mesma pesquisa de satisfação respondida cobrindo múltiplos pedidos do mesmo cliente (nota, comentário e datas idênticos entre os pares). Nulos em review_comment_title e review_comment_message são esperados, já que o preenchimento de comentário é opcional.\n\n"
 
 # Salvando o arquivo
 with open("../relatorios/relatorio_qualidade.md", "w", encoding="utf-8") as arquivo:

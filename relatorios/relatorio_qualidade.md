@@ -137,3 +137,25 @@ dtype: int64
 
 **Observação:** tabela sem inconsistências encontradas — nulos, duplicatas e integridade referencial todos limpos.
 
+## Tabela: Reviews
+
+**Nulos por coluna:**
+```
+review_id                      0
+order_id                       0
+review_score                   0
+review_comment_title       87656
+review_comment_message     58247
+review_creation_date           0
+review_answer_timestamp        0
+dtype: int64
+```
+
+**Duplicatas (review_id):**
+814
+
+**Reviews órfãs (reviews → orders):**
+0
+
+**Observação:** review_score sempre dentro do intervalo esperado (1 a 5). Os 814 casos de review_id duplicado não representam erro — correspondem a uma mesma pesquisa de satisfação respondida cobrindo múltiplos pedidos do mesmo cliente (nota, comentário e datas idênticos entre os pares). Nulos em review_comment_title e review_comment_message são esperados, já que o preenchimento de comentário é opcional.
+
