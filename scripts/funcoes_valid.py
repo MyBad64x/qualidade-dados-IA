@@ -33,3 +33,7 @@ def checar_sequencia_status_datas(df):
 
 def checar_orfaos(df_estrangeiro, df_principal, coluna_chave):
     return (~df_estrangeiro[coluna_chave].isin(df_principal[coluna_chave])).sum()
+
+
+def checar_fora_do_range(df, coluna, minimo, maximo):
+    return ((df[coluna] < minimo) | (df[coluna] > maximo)).sum()

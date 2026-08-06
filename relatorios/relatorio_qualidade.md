@@ -159,3 +159,26 @@ dtype: int64
 
 **Observação:** review_score sempre dentro do intervalo esperado (1 a 5). Os 814 casos de review_id duplicado não representam erro — correspondem a uma mesma pesquisa de satisfação respondida cobrindo múltiplos pedidos do mesmo cliente (nota, comentário e datas idênticos entre os pares). Nulos em review_comment_title e review_comment_message são esperados, já que o preenchimento de comentário é opcional.
 
+## Tabela: Geolocation
+
+**Nulos por coluna:**
+```
+geolocation_zip_code_prefix    0
+geolocation_lat                0
+geolocation_lng                0
+geolocation_city               0
+geolocation_state              0
+dtype: int64
+```
+
+**Linhas totalmente duplicadas:**
+261831
+
+**Latitude fora do range do Brasil (-34 a 6):**
+31
+
+**Longitude fora do range do Brasil (-74 a -33):**
+37
+
+**Observação:** mais de 260 mil linhas duplicadas (mesmo CEP, coordenadas, cidade e estado), sugerindo redundância na coleta de dados. Além disso, 42 linhas possuem coordenadas geográficas fora dos limites plausíveis do território brasileiro, indicando possível erro de geocodificação.
+

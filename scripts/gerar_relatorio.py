@@ -1,5 +1,5 @@
 import pandas as pd
-from funcoes_valid import checar_nulos, checar_duplicados, checar_valores_negativos, checar_sequencia_status_datas, checar_orfaos, checar_valores_zerados
+from funcoes_valid import checar_nulos, checar_duplicados, checar_valores_negativos, checar_sequencia_status_datas, checar_orfaos, checar_valores_zerados, checar_fora_do_range
 
 # Carregando os dados
 df_customers = pd.read_csv("../dados/brutos/olist_customers_dataset.csv")
@@ -9,6 +9,7 @@ df_products = pd.read_csv("../dados/brutos/olist_products_dataset.csv")
 df_payments = pd.read_csv("../dados/brutos/olist_order_payments_dataset.csv")
 df_sellers = pd.read_csv("../dados/brutos/olist_sellers_dataset.csv")
 df_reviews = pd.read_csv("../dados/brutos/olist_order_reviews_dataset.csv")
+df_geolocation = pd.read_csv("../dados/brutos/olist_geolocation_dataset.csv")
 
 # Montando o conteúdo do relatório
 relatorio = "# Relatório de Qualidade de Dados — E-commerce Olist\n\n"
@@ -112,6 +113,23 @@ relatorio += "**Reviews órfãs (reviews → orders):**\n"
 relatorio += f"{checar_orfaos(df_reviews, df_orders, 'order_id')}\n\n"
 
 relatorio += "**Observação:** review_score sempre dentro do intervalo esperado (1 a 5). Os 814 casos de review_id duplicado não representam erro — correspondem a uma mesma pesquisa de satisfação respondida cobrindo múltiplos pedidos do mesmo cliente (nota, comentário e datas idênticos entre os pares). Nulos em review_comment_title e review_comment_message são esperados, já que o preenchimento de comentário é opcional.\n\n"
+
+# --- Geolocation ---
+relatorio += "## Tabela: Geolocation\n\n"
+relatorio += "**Nulos por coluna:**\n```\n"
+relatorio += str(checar_nulos(df_geolocation))
+relatorio += "\n```\n\n"
+
+relatorio += "**Linhas totalmente duplicadas:**\n"
+relatorio += f"{df_geolocation.duplicated().sum()}\n\n"
+
+relatorio += "**Latitude fora do range do Brasil (-34 a 6):**\n"
+relatorio += f"{checar_fora_do_range(df_geolocation, 'geolocation_lat', -34, 6)}\n\n"
+
+relatorio += "**Longitude fora do range do Brasil (-74 a -33):**\n"
+relatorio += f"{checar_fora_do_range(df_geolocation, 'geolocation_lng', -74, -33)}\n\n"
+
+relatorio += "**Observação:** mais de 260 mil linhas duplicadas (mesmo CEP, coordenadas, cidade e estado), sugerindo redundância na coleta de dados. Além disso, 42 linhas possuem coordenadas geográficas fora dos limites plausíveis do território brasileiro, indicando possível erro de geocodificação.\n\n"
 
 # Salvando o arquivo
 with open("../relatorios/relatorio_qualidade.md", "w", encoding="utf-8") as arquivo:
