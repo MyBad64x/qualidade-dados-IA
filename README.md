@@ -24,7 +24,7 @@ Os arquivos CSV não estão incluídos neste repositório. Para reproduzir o pro
 
 
 ## Estrutura do Projeto
-
+```
 qualidade_dados/
 ├── dados/
 │ ├── brutos/ # CSVs originais do Olist (não versionado)
@@ -40,7 +40,7 @@ qualidade_dados/
 ├── requirements.txt
 ├── .gitignore
 └── README.md
-
+```
 
 ## Funções de Validação
 
